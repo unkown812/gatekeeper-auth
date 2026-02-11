@@ -1,6 +1,5 @@
 import express, { Router } from "express";
-import { GatekeeperConfig } from "../types/config.types";
-
+import type { GatekeeperConfig } from "../types/config.types";
 import { registerController } from "../controllers/register.controller";
 import { loginController } from "../controllers/login.controller";
 import { refreshController } from "../controllers/refresh.controller";

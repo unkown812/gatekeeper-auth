@@ -13,7 +13,7 @@ export const registerController =
         const parsed = registerSchema.safeParse(req.body);
         if (!parsed.success) {
           return res.status(400).json({
-            message: parsed.error.errors[0].message
+            message: parsed.error.message
           });
         }
 
