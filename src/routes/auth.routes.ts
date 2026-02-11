@@ -3,6 +3,7 @@ import type { GatekeeperConfig } from "../types/config.types";
 import { registerController } from "../controllers/register.controller";
 import { loginController } from "../controllers/login.controller";
 import { refreshController } from "../controllers/refresh.controller";
+import { logoutController } from "../controllers/logout.controller";
 
 /**
  * Creates auth routes with injected config
@@ -30,6 +31,8 @@ export const createAuthRoutes = (config: GatekeeperConfig): Router => {
    * @desc    Generate new access token using refresh token
    * @access  Public
    */
+
+  router.post("/logout", logoutController());
   router.post("/refresh", refreshController(config));
 
   return router;

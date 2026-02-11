@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import type{ GatekeeperConfig } from "../types/config.types";
+import type { GatekeeperConfig } from "../types/config.types";
 import { User } from "../models/user.model";
+import { RefreshToken } from "../models/refreshToken.model";
 import { generateAccessToken } from "../utils/jwt";
 
 export const refreshController =
@@ -9,12 +10,16 @@ export const refreshController =
     async (req: Request, res: Response) => {
       try {
         const { refreshToken } = req.body;
-
         if (!refreshToken) {
           return res.status(401).json({ message: "Refresh token required" });
         }
 
-        // verify refresh token
+        // check token exists in DB
+        const stored = await RefreshToken.findOne({ token: refreshToken });
+        if (!stored) {
+          return res.status(403).json({ message: "Token revoked" });
+        }
+
         const decoded = jwt.verify(refreshToken, config.jwtSecret) as any;
 
         const user = await User.findById(decoded.id);
@@ -24,13 +29,9 @@ export const refreshController =
 
         const newAccessToken = generateAccessToken(user, config);
 
-        return res.json({
-          accessToken: newAccessToken
-        });
+        return res.json({ accessToken: newAccessToken });
 
-      } catch (error) {
-        return res.status(401).json({
-          message: "Invalid refresh token"
-        });
+      } catch {
+        return res.status(401).json({ message: "Invalid refresh token" });
       }
     };

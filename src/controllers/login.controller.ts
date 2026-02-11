@@ -4,6 +4,7 @@ import type { GatekeeperConfig } from "../types/config.types";
 import { loginSchema } from "../utils/validators";
 import { comparePassword } from "../utils/hash";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
+import { RefreshToken } from "../models/refreshToken.model";
 
 export const loginController =
   (config: GatekeeperConfig) =>
@@ -15,7 +16,7 @@ export const loginController =
             message: parsed.error.message
           });
         }
-
+        
         const { identifier, password } = parsed.data;
 
         // find by email OR username
@@ -34,6 +35,11 @@ export const loginController =
 
         const accessToken = generateAccessToken(user, config);
         const refreshToken = generateRefreshToken(user, config);
+
+        await RefreshToken.create({
+          user: user._id,
+          token: refreshToken
+        });
 
         return res.json({
           user: {
