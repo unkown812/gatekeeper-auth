@@ -1,0 +1,46 @@
+Different projects can do:
+
+initGatekeeper({
+  jwtSecret: "project1secret"
+})
+
+
+Another project:
+
+initGatekeeper({
+  jwtSecret: "anothersecret"
+})
+
+
+Same package → different configs.
+
+
+In any Express project:
+
+import express from "express";
+import mongoose from "mongoose";
+import { initGatekeeper } from "gatekeeper-auth";
+
+const app = express();
+app.use(express.json());
+
+await mongoose.connect("mongodb://127.0.0.1/test");
+
+const auth = initGatekeeper({
+  jwtSecret: "supersecret"
+});
+
+app.use("/auth", auth.routes);
+
+app.get("/profile", auth.protect, (req:any,res)=>{
+  res.json({ user:req.user });
+});
+
+app.listen(3000);
+
+
+Test in Postman:
+
+POST /auth/register
+POST /auth/login
+POST /auth/refresh
