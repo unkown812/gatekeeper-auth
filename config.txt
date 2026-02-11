@@ -44,3 +44,13 @@ Test in Postman:
 POST /auth/register
 POST /auth/login
 POST /auth/refresh
+
+
+Flow becomes:
+
+login → create refresh token → store in DB
+refresh → verify token exists in DB
+logout → delete refresh token from DB
+
+
+Now tokens can be killed anytime.
