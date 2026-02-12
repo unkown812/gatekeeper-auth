@@ -52,7 +52,7 @@ export const registerController = (config: GatekeeperConfig) =>
 
       return res.status(201).json({
         message: "User registered. Please verify email.",
-        verifyToken: emailToken // remove later when real email added
+        verifyToken: emailToken 
       });
 
     } catch (error: any) {

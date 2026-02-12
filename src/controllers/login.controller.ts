@@ -33,6 +33,13 @@ export const loginController =
           return res.status(401).json({ message: "Invalid password" });
         }
 
+        if (!user.isVerified) {
+          return res.status(403).json({
+            message: "Please verify email first"
+          });
+        }
+
+
         const accessToken = generateAccessToken(user, config);
         const refreshToken = generateRefreshToken(user, config);
 

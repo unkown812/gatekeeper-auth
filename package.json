@@ -15,7 +15,11 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test"
+    "test": "npm run test",
+    "lint": "npm run lint",
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
