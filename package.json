@@ -17,7 +17,7 @@
   "scripts": {
     "test": "npm run test",
     "lint": "npm run lint",
-    "start": "ts-node src/index.ts",
+    "start": "node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc"
   },
