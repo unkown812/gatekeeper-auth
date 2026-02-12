@@ -54,3 +54,18 @@ logout → delete refresh token from DB
 
 
 Now tokens can be killed anytime.
+
+
+🧠 How email verification will work
+
+Flow:
+
+register →
+create verification token →
+send email →
+user clicks link →
+verify endpoint →
+account marked verified
+
+
+We’ll build it reusable for npm package.

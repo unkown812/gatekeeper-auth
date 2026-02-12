@@ -4,6 +4,7 @@ import type { GatekeeperConfig } from "../types/config.types";
 import { registerSchema } from "../utils/validators";
 import { hashPassword } from "../utils/hash";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
+import { generateEmailToken } from "../utils/emailToken";
 
 export const registerController = (config: GatekeeperConfig) =>
   async (req: Request, res: Response) => {
@@ -36,10 +37,13 @@ export const registerController = (config: GatekeeperConfig) =>
       );
 
       // Create user
+      const emailToken = generateEmailToken();
       const user = await User.create({
         username,
         email,
-        password: hashed
+        password: hashed,
+        emailVerifyToken: emailToken,
+        isVerified: false
       });
 
       // Generate tokens
@@ -47,14 +51,8 @@ export const registerController = (config: GatekeeperConfig) =>
       const refreshToken = generateRefreshToken(user, config);
 
       return res.status(201).json({
-        user: {
-          id: user._id,
-          username: user.username,
-          email: user.email,
-          role: user.role
-        },
-        accessToken,
-        refreshToken
+        message: "User registered. Please verify email.",
+        verifyToken: emailToken // remove later when real email added
       });
 
     } catch (error: any) {

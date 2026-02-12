@@ -4,6 +4,7 @@ import { registerController } from "../controllers/register.controller";
 import { loginController } from "../controllers/login.controller";
 import { refreshController } from "../controllers/refresh.controller";
 import { logoutController } from "../controllers/logout.controller";
+import { verifyEmailController } from "../controllers/verifyEmail.controller";
 
 /**
  * Creates auth routes with injected config
@@ -34,6 +35,7 @@ export const createAuthRoutes = (config: GatekeeperConfig): Router => {
 
   router.post("/logout", logoutController());
   router.post("/refresh", refreshController(config));
+  router.get("/verify-email/:token", verifyEmailController());
 
   return router;
 };
